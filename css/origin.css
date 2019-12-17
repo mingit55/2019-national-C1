@@ -109,7 +109,7 @@ a { text-decoration: none; }
 .py-4 { padding: 40px 0;  }
 .py-5 { padding: 50px 0;  }
 
-
+.box-shadow { box-shadow: 0 0 8px 6px #00000020; }
 
 .flex { display: flex; }
 .stack { display: flex; flex-wrap: wrap; }
@@ -133,6 +133,7 @@ a { text-decoration: none; }
 
 .inline {
     max-width: 1440px;
+    /* min-width: 480px; */
     height: 100%;
     margin: 0 auto;
     padding: 0 20px;
@@ -369,6 +370,12 @@ label[for='on-mobile-nav'] {
     }
 }
 
+@media (max-width: 1140px) {
+    #visual .images > div {
+        background-size: auto 100%;
+    }
+}
+
 
 /* BIFF NEWS
  */
@@ -405,8 +412,10 @@ label[for='on-mobile-nav'] {
 }
 
 @media (max-width: 480px) {
+
     #biff-2019 .w-50 .stack .w-50 {
         width: 100%;
+        text-align: center;
     }
 }
 
@@ -463,6 +472,28 @@ label[for='on-mobile-nav'] {
      }
  }
 
- @media (max-width: 720px){
-    
- }
+
+
+ /* hold-intro
+  */
+
+  #hold-intro .muted {
+      color: #00000090;
+  }
+
+  #hold-intro .accent {
+      font-size: 1.1em;
+  }
+
+  #hold-intro .image {
+      height: 400px;
+  }
+
+  @media (max-width: 1140px){
+      #hold-intro .inline > * {
+          width: 100%;
+      }
+      #hold-intro .image {
+          height: auto;
+      }
+  }
