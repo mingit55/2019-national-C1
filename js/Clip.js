@@ -1,0 +1,5 @@
+class Clip {
+    constructor(track){
+
+    }
+}

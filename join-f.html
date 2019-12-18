@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BIFF 부산국제영화제</title>
+    <link rel="stylesheet" href="css/origin.css">
+    <link rel="stylesheet" href="css/join-f.css">
+    <script src="js/Clip.js"></script>
+    <script src="js/Track.js"></script>
+    <script src="js/Viewport.js"></script>
+    <script src="js/App.js"></script>
+</head>
+<body>
+    <input type="checkbox" id="on-mobile-nav" hidden>
+    <!-- 헤더 -->
+    <header>
+        <div class="inline flex justify-between align-center">
+            <a id="logo" href="index.html">
+                <img src="images/Llogo.png" alt="부산국제영화제" height="50">
+            </a>
+            <div class="main-nav flex align-center">
+                <a href="index.html" class="active">부산국제영화제</a>
+                <div class="nav-more more-1 flex align-center">
+                    <a href="hold-intro.html">개최개요</a>
+                    <a href="f-info.html">행사안내</a>
+                </div>
+    
+                <a href="#">출품신청</a>
+                <a href="#">상영일정</a>
+                <a href="#">상영작검색</a>
+                <a href="#">이벤트</a>
+                <div class="nav-more more-2 flex align-center">
+                    <a href="#">영화티저 콘테스트</a>
+                    <a href="join-f.html">콘테스트 참여하기</a>
+                </div>
+            </div>
+            <div class="sub-nav flex align-center">
+                <a href="#">로그인</a>
+                <a href="#">회원가입</a>
+            </div>
+            <label for="on-mobile-nav"></label>
+        </div>
+    </header>
+    <div id="mobile-nav">
+        <ul class="mt-5 pt-5 px-3">
+            <li>
+                <a href="index.html">부산국제영화제</a>
+                <ul>
+                    <li><a href="hold-intro.html">개최개요</a></li>
+                    <li><a href="f-info.html">행사안내</a></li>
+                </ul>
+            </li>
+            <li><a href="#">출품신청</a></li>
+            <li><a href="#">상영일정</a></li>
+            <li><a href="#">상영작검색</a></li>
+            <li>
+                <a href="#">이벤트</a>
+                <ul>
+                    <li><a href="#">영화티저 콘테스트</a></li>
+                    <li><a href="join-f.html">콘테스트 참가하기</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- 비쥬얼 -->
+    <section id="visual">
+        <div class="images">
+            <div class="slide1"></div>
+            <div class="slide2"></div>
+            <div class="slide3"></div>
+            <div class="slide1"></div>
+        </div>
+        <div class="inline">
+            <div class="texts">
+                <div class="text">
+                    <h5 class="sub">2019년을 장식할 최고의 무대</h5>
+                    <h2 class="main">부산국제영화제</h2>
+                </div>
+                <div class="text">
+                    <h5 class="sub">2020년을 장식할 최고의 무대</h5>
+                    <h2 class="main">부산국제영화제</h2>
+                </div>
+                <div class="text">
+                    <h5 class="sub">2021년을 장식할 최고의 무대</h5>
+                    <h2 class="main">부산국제영화제</h2>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Festival -->
+    <section id="join-festival">
+        <div class="inline">
+            <div class="section-title">
+                <h1>참가하기</h1>
+            </div>
+            <div class="flex justify-between align-start">
+                <div class="btn-bar w-10 flex column">
+                    <button id="path-btn" class="btn my-05 pa-05">자유곡선</button>
+                    <button id="rect-btn" class="btn my-05 pa-05">사각형</button>
+                    <button id="text-btn" class="btn my-05 pa-05">텍스트</button>
+                    <button id="select-btn" class="btn my-05 pa-05">선택</button>
+                    <button id="play-btn" class="btn my-05 pa-05">재생</button>
+                    <button id="pause-btn" class="btn my-05 pa-05">정지</button>
+                    <button id="allDel-btn" class="btn my-05 pa-05">전체 삭제</button>
+                    <button id="selDel-btn" class="btn my-05 pa-05">선택 삭제</button>
+                    <button id="down-btn" class="btn my-05 pa-05">다운로드</button>
+                </div>
+                <div class="w-60">
+                    <div id="viewport">
+                        <video></video>
+                        <div class="empty-msg">
+                            <p class="white text-center">동영상을 선택해주세요.</p>
+                        </div>
+                    </div>
+                    <div id="v-ui" class="flex justify-between my-2">
+                        <div class="video-info">
+                            <span class="current">00:00:00:00</span>
+                            <span>/</span>
+                            <span class="duration">00:00:00:00</span>
+                        </div>
+                        <div class="clip-info">
+                            시작 시간:
+                            <span class="start">00:00:00:00</span>
+                            &nbsp;&nbsp;
+                            유지기간:
+                            <span class="duration">00:00:00:00</span>
+                        </div>
+                    </div>
+                    <!-- 시간 표시줄 -->
+                    <div id="track">
+                    </div>
+                    <!-- 영화 표시줄 -->
+                    <div id="movie-line" class="w-100 flex justify-between mt-5">
+                        <img src="images/movie1.jpg" alt="movies" class="item w-20" data-id="1">
+                        <img src="images/movie2.jpg" alt="movies" class="item w-20" data-id="2">
+                        <img src="images/movie3.jpg" alt="movies" class="item w-20" data-id="3">
+                        <img src="images/movie4.jpg" alt="movies" class="item w-20" data-id="4">
+                    </div>
+                </div>
+                <div class="w-10 flex column">
+                    <div class="form-group my-1">
+                        <label for="s-color">색상</label><br>
+                        <select id="s-color">
+                            <option value="gray">gray</option>
+                            <option value="blue">blue</option>
+                            <option value="green">green</option>
+                            <option value="red">red</option>
+                            <option value="yellow">yellow</option>
+                        </select>
+                    </div>
+                    <div class="form-group my-1">
+                        <label for="s-width">선 두께</label><br>
+                        <select id="s-width">
+                            <option value="3px">3px</option>
+                            <option value="5px">5px</option>
+                            <option value="10px">10px</option>
+                        </select>
+                    </div>
+                    <div class="form-group my-1">
+                        <label for="s-fsize">글자 크기</label><br>
+                        <select id="s-fsize">
+                            <option value="16px">16px</option>
+                            <option value="18px">18px</option>
+                            <option value="24px">24px</option>
+                            <option value="32px">32px</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="py-2">
+        <div class="inline stack">
+            <div class="w-50 flex column">
+                <div class="w-100 flex justify-center">
+                    <img src="images/sns1.jpg" alt="sns-1" class="ma-05">
+                    <img src="images/sns2.jpg" alt="sns-2" class="ma-05">
+                    <img src="images/sns3.jpg" alt="sns-3" class="ma-05">
+                    <img src="images/sns4.jpg" alt="sns-4" class="ma-05">
+                    <img src="images/sns5.jpg" alt="sns-5" class="ma-05">
+                </div>
+                <div class="footer-nav w-100 stack justify-center mt-2">
+                    <a href="#" class="mx-3 accent">부산국제영화제</a>
+                    <a href="#" class="mx-3 accent">출품신청</a>
+                    <a href="#" class="mx-3 accent">상영일정</a>
+                    <a href="#" class="mx-3 accent">상영작검색</a>
+                    <a href="#" class="mx-3 accent">이벤트</a>
+                </div>
+                <div class="w-100 mt-2">
+                    <p class="text-center muted">
+                        ⓒ Busan International Film Festival
+                    </p>
+                </div>
+            </div>
+            <div class="w-50 flex column">
+                <p class="w-100 muted mt-2">
+                    서울사무소(03131) 서울특별시 종로구 율곡로 84 가든타워 1601호<br>
+                    지도전화 02-3675-5097  팩스 02-3675-5098
+                </p>
+                <p class="w-100 muted mt-2 mb-3">
+                    부산사무국(48058) 부산시 해운대구 수영강변대로 120 영화의전당 비프힐 3층<br>
+                    지도전화 1688-3010  팩스 051-709-2299
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
