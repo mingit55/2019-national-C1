@@ -4,11 +4,20 @@ String.prototype.parseDom = function(){
     return parent.firstChild;
 };
 
-// Number.prototype.parseStr = function(){
-//     let hour = this / 3600;
-//     let min = (this % 3600) / 60;
-//     let sec = this % 60;
-// }
+Number.prototype.parseTime = function(){
+    let int = parseInt(this);
+    let msec = (this - int).toFixed(2).substr(2);
+
+    let hour = parseInt(int / 3600);
+    let min = parseInt((int % 3600) / 60);
+    let sec = int % 60;
+
+    if(hour < 10) hour = "0" + hour;
+    if(min < 10) min = "0" + min;
+    if(sec < 10) sec = "0" + sec;
+
+    return `${hour}:${min}:${sec}:${msec}`;
+}
 
 class App {
     constructor(){
@@ -20,13 +29,6 @@ class App {
 
         // 트랙
         this.track = document.querySelector("#track");
-
-        // 비디오 UI
-        this.videoTime = document.querySelector("#v-ui .video-info .current");
-        this.videoDuration = document.querySelector("#v-ui .video-info .duration");
-        this.clipStart = document.querySelector("#v-ui .clip-info .start");
-        this.clipDuration = document.querySelector("#v-ui .clip-info .duration");
-
         
         this.init();
         this.addEvent();

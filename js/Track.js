@@ -1,8 +1,9 @@
 class Track {
-    constructor(trackLine, app){
+    constructor(track, app){
         this.app = app;
+        this.clipList = [];
     
-        this.root = trackLine;
+        this.root = track;
         this.html =  `<div>
                             <div class="cursor"></div>
                             <div class="list">
@@ -11,6 +12,9 @@ class Track {
                                 </div>
                             </div>
                         </div>`.parseDom();
-        console.log(dom);
+
+        this.root.innerHTML = "";
+        this.root.prepend(this.html);
+
     }
 }
