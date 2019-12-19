@@ -20,12 +20,21 @@ Number.prototype.parseTime = function(){
 }
 
 class App {
-    constructor(){
+    static PATH = 0;
+    static RECT = 1;
+    static TEXT = 2;
+    static SELECT = 3;
 
+    constructor(){
+        this.status = null;
         
         ////////////////
         //  DOM List  //
         ////////////////
+
+
+        // Wrap
+        this.contents = document.querySelector("#contents");
 
         // 트랙
         this.track = document.querySelector("#track");
@@ -45,13 +54,13 @@ class App {
         // Tool Bar //
         //////////////
 
-        document.querySelector("#path-btn")
+        document.querySelector("#path-btn").addEventListener("click", e => this.changeStatus(e.target, App.PATH));
         
-        document.querySelector("#rect-btn")
+        document.querySelector("#rect-btn").addEventListener("click", e => this.changeStatus(e.target, App.RECT));
 
-        document.querySelector("#text-btn")
+        document.querySelector("#text-btn").addEventListener("click", e => this.changeStatus(e.target, App.TEXT));
 
-        document.querySelector("#select-btn");
+        document.querySelector("#select-btn").addEventListener("click", e => this.changeStatus(e.target, App.SELECT));
         
         document.querySelector("#play-btn").addEventListener("click", () => this.viewport.playVideo());
         
@@ -71,10 +80,29 @@ class App {
         document.querySelectorAll("#movie-line").forEach(movie => {
             movie.addEventListener("click", e => {
                 let id = e.target.dataset.id;
-                this.trackList.push( new Track(this.track) );
-                this.viewport.setVideo(id);
+                let track = this.trackList.find(x => x.id === id);
+                
+                if(!track){
+                    track = new Track(id, this.track, this);
+                    this.trackList.push(track);   
+                }
+
+                this.viewport.setVideo(track);
+
+                this.track.innerHTML = "";
+                this.track.prepend(track.html);
+                track.width = track.html.offsetWidth;
             });
         });
+    }
+
+    changeStatus(target, status){
+        this.status = status;
+
+        const exist = document.querySelector("#join-festival .btn-bar .btn.active");
+        if(exist) exist.classList.remove("active");
+
+        target.classList.add("active");
     }
 }
 

@@ -2,7 +2,7 @@
 
 #viewport {
     position: relative;
-    height: 500px;
+    height: 450px;
     background-color: #000;
 }
 
@@ -12,6 +12,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
+    height: 100%;
 }
 
 #viewport .empty-msg {
@@ -22,7 +23,7 @@
     height: 100%;
     background-color: #00000050;
     text-align: center;
-    line-height: 500px;
+    line-height: 450px;
     z-index: 1;
 }
 
@@ -77,4 +78,29 @@
 
 #movie-line .item {
     cursor: pointer;
+}
+
+#join-festival .btn-bar > button {
+    border: 0;
+    border-radius: 5px;
+    background-color: rgb(238, 238, 238);
+}
+
+#join-festival .btn-bar > button.active {
+    background-color: rgb(255, 173, 96);
+    color: white;
+}
+
+#viewport .clip {
+    position: absolute;
+}
+
+#viewport div.clip {
+    width: 1px;
+    height: 1px;
+}
+
+#viewport input.clip {
+    background: none;
+    border: 0;
 }
