@@ -54,17 +54,17 @@ class App {
         // Tool Bar //
         //////////////
 
-        document.querySelector("#path-btn").addEventListener("click", e => this.changeStatus(e.target, App.PATH));
+        document.querySelector("#path-btn").addEventListener("click", e => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.changeStatus(e.target, App.PATH));
         
-        document.querySelector("#rect-btn").addEventListener("click", e => this.changeStatus(e.target, App.RECT));
+        document.querySelector("#rect-btn").addEventListener("click", e => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.changeStatus(e.target, App.RECT));
 
-        document.querySelector("#text-btn").addEventListener("click", e => this.changeStatus(e.target, App.TEXT));
+        document.querySelector("#text-btn").addEventListener("click", e => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.changeStatus(e.target, App.TEXT));
 
-        document.querySelector("#select-btn").addEventListener("click", e => this.changeStatus(e.target, App.SELECT));
+        document.querySelector("#select-btn").addEventListener("click", e => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.changeStatus(e.target, App.SELECT));
         
-        document.querySelector("#play-btn").addEventListener("click", () => this.viewport.playVideo());
+        document.querySelector("#play-btn").addEventListener("click", () => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.viewport.playVideo());
         
-        document.querySelector("#pause-btn").addEventListener("click", () => this.viewport.pauseVideo());
+        document.querySelector("#pause-btn").addEventListener("click", () => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.viewport.pauseVideo());
 
         document.querySelector("#alldel-btn");
 
@@ -77,7 +77,7 @@ class App {
         // Video List //
         ////////////////
 
-        document.querySelectorAll("#movie-line").forEach(movie => {
+        document.querySelectorAll("#movie-line img").forEach(movie => {
             movie.addEventListener("click", e => {
                 let id = e.target.dataset.id;
                 let track = this.trackList.find(x => x.id === id);

@@ -93,6 +93,7 @@
 
 #viewport .clip {
     position: absolute;
+    pointer-events: none;
 }
 
 #viewport div.clip {
@@ -103,4 +104,9 @@
 #viewport input.clip {
     background: none;
     border: 0;
+    padding: 5px;
+}
+
+#viewport span.clip {
+    padding: 5px;
 }

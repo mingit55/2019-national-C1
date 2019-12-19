@@ -49,13 +49,29 @@ class Track {
     }
 
     pushClip(clip){
-        this.listHtml.append(clip.t_root);
+        this.listHtml.prepend(clip.t_root);
 
         this.clipList.push(clip);
+    }
+
+    removeClip(clip){
+        let idx = this.clipList.findIndex(x => x === clip);
+        this.clipList.splice(idx, 1);
+
+        clip.root.remove();
+        clip.t_root.remove();
     }
 
     seekCursor(x){
         if(typeof x !== "number") return;
         this.cursor.style.left = x + "px";
+    }
+
+    disableClips(){
+        this.clipList.forEach(x => x.root.style.pointerEvents = "none");
+    }
+
+    enableClips(){
+        this.clipList.forEach(x => x.root.style.pointerEvents = "all");
     }
 }

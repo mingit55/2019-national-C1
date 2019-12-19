@@ -28,43 +28,64 @@ class Viewport {
             if(this.video.src === "") return false;
             if(this.app.status === null) return false;
 
+            if(this.clipBuffer !== null && this.clipBuffer.type === App.TEXT){
+                if(this.clipBuffer.root.value.trim() === ""){
+                    this.playTrack.removeClip(this.clipBuffer);
+                }
+                else {
+                    this.clipBuffer.setText();
+                }
+                this.clipBuffer = null;
+                return;
+            }
+
+            console.log(this.clipBuffer);
+
             // 선택
-            else if(this.app.status === App.SELECT){
+            if(this.app.status === App.SELECT){
 
             }
             
             // 자유곡선, 사각형, 텍스트
             else {
                 this.pauseVideo();
+
                 const clip = this.clipBuffer = new Clip(this.app.status, this.playTrack);
                 clip.root.style.zIndex = this.playTrack.clipList.length + 1;
                 this.playTrack.pushClip(clip);
                 this.root.append(clip.root);
 
+                let style = clip.root.style;
                 if(clip.type === App.PATH){
                     clip.ctx.beginPath();
                     clip.ctx.moveTo(e.offsetX, e.offsetY);
                 }
                 else if(clip.type === App.RECT){
-                    let style = clip.root.style;
                     style.left = e.offsetX + "px";
                     style.top = e.offsetY + "px";
                     
                     clip.x = e.offsetX;
                     clip.y = e.offsetY;
                 }
+                else if(clip.type === App.TEXT){
+                    style.left = e.offsetX + "px";
+                    style.top = e.offsetY + "px";
+
+                    clip.x = e.offsetX;
+                    clip.y = e.offsetY;
+                }
             }
         });
 
-        window.addEventListener("mousemove", e => {
+        this.root.addEventListener("mousemove", e => {
             if(e.which !== 1) return false;
             if(this.clipBuffer === null) return false;
 
             const clip = this.clipBuffer;
 
-            const x = e.offsetX > this.width;
-            const y = e.offsetY;
-
+            let x = e.offsetX;
+            let y = e.offsetY;
+            
 
             if(clip.type === App.PATH){
                 clip.ctx.lineTo(x, y);
@@ -75,17 +96,42 @@ class Viewport {
                 let style = clip.root.style;
 
                 if(clip.x < x && clip.y < y) {
+                    style.left = clip.x + "px"
+                    style.top = clip.y + "px";
                     style.width = x - clip.x + "px";
+                    style.height = y - clip.y + "px";
+                }
+                else if(clip.x > x && clip.y > y){
+                    style.left = x + "px";
+                    style.top = y + "px";
+                    style.width = clip.x - x + "px";
+                    style.height = clip.y - y + "px";
+                }
+                else if(clip.x < x && clip.y > y){
+                    style.left = clip.x + "px";
+                    style.top = y + "px";
+                    style.width = x - clip.x + "px";
+                    style.height = clip.y - y + "px";
+                }
+                else if(clip.x > x && clip.y < y){
+                    style.left = x + "px";
+                    style.top = clip.y + "px";
+                    style.width = clip.x - x + "px";
                     style.height = y - clip.y + "px";
                 }
             }
         });
 
-        this.root.addEventListener("mouseup", e => {
+        window.addEventListener("mouseup", e => {
             if(e.which !== 1) return false;
             if(this.clipBuffer === null) return false;
 
-            this.clipBuffer = null;
+            if(this.clipBuffer.type === App.TEXT) {
+                this.clipBuffer.root.focus();
+            }
+            else {
+                this.clipBuffer = null;
+            }
         });
     }
 

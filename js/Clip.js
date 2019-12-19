@@ -23,11 +23,11 @@ class Clip {
                         </div>`.parseDom();
 
         if(type === App.PATH) {
-            const {offsetWidth, offsetHeight} = this.track.app.viewport.root;
+            const {width, height} = this.track.app.viewport;
 
             this.root = document.createElement("canvas");
-            this.root.width = offsetWidth;
-            this.root.height = offsetHeight;
+            this.root.width = width;
+            this.root.height = height;
 
             this.ctx = this.root.getContext('2d');
             this.ctx.strokeStyle = this.clipColor.value;
@@ -42,6 +42,10 @@ class Clip {
         else if(type === App.TEXT) {
             this.root = document.createElement("input");
             this.root.type = "text";
+
+            let style = this.root.style;
+            style.color = this.clipColor.value;
+            style.fontSize = this.clipFsize.value;
         }
 
         this.root.classList.add("clip");
@@ -49,7 +53,25 @@ class Clip {
         this.addEvent();
     }
 
-    addEvent(){
+    setText(){
+        let text = this.root.value;
+        let parent = this.root.parentElement;
         
+        let span = document.createElement("span");
+        span.classList.add("clip");
+        span.innerText = text;
+        span.style.left = this.x + "px";
+        span.style.top = this.y + "px";
+        span.style.color = this.root.style.color;
+        span.style.fontSize = this.root.style.fontSize;
+
+        parent.insertBefore(span, this.root);
+        this.root.remove();
+
+        this.root = span;
+    }
+
+    addEvent(){
+        this.root.addEventListener("keydown", e => e.stopPropagation());
     }
 }
