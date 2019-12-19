@@ -3,6 +3,10 @@ class Clip {
 
     constructor(type, track){
         this.active = false;
+        this.click = false;
+        this.cx = 0;
+        this.cy = 0;
+
         this.type = type;
         this.track = track;
 
@@ -84,6 +88,30 @@ class Clip {
         this.t_root.addEventListener("click", () => {
             this.track.clipList.forEach(x => x.diselect());
             this.select();
+        });
+
+        this.root.addEventListener("mousedown", e => {
+            this.click = true; 
+            this.cx = e.offsetX;
+            this.cy = e.offsetY;
+        });
+
+        window.addEventListener("mousemove", e => {
+            if(e.which !== 1 || !this.click) return false;
+            if(e.target.tagName !== "VIDEO")  return false;
+            console.log(this.type)
+            let ox = e.offsetX;
+            let oy = e.offsetY;
+
+            if(this.type !== App.PATH) {
+                console.log(ox - this.cx, oy - this.cy);
+                this.root.style.left = ox - this.cx + "px";
+                this.root.style.top = oy - this.cy + "px";
+            }
+        });
+        
+        window.addEventListener("mouseup", e => {
+            this.click = false;
         });
     }
 

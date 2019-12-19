@@ -28,7 +28,7 @@ class Viewport {
             if(this.video.src === "") return false;
             if(this.app.status === null) return false;
 
-            if(this.clipBuffer !== null && this.clipBuffer.type === App.TEXT){
+            if(this.clipBuffer !== null && this.clipBuffer.root.nodeName === "INPUT"){
                 if(this.clipBuffer.root.value.trim() === ""){
                     this.playTrack.removeClip(this.clipBuffer);
                 }

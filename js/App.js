@@ -19,6 +19,7 @@ Number.prototype.parseTime = function(){
     return `${hour}:${min}:${sec}:${msec}`;
 }
 
+
 class App {
     static PATH = 0;
     static RECT = 1;

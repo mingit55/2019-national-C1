@@ -4,6 +4,7 @@
     position: relative;
     height: 450px;
     background-color: #000;
+    overflow: hidden;
 }
 
 #viewport video {
