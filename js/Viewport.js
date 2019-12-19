@@ -39,17 +39,36 @@ class Viewport {
                 return;
             }
 
-            console.log(this.clipBuffer);
+            this.pauseVideo();
 
             // 선택
             if(this.app.status === App.SELECT){
+                this.clipBuffer = null;
+                this.playTrack.clipList.forEach(x => x.diselect());
+
+                for(const clip of this.playTrack.clipList.reverse()){
+                    if(this.clipBuffer !== null) break;
+                    if(clip.type !== App.PATH){
+                        if(e.target === clip.root) {
+                            this.clipBuffer = clip;
+                            clip.select();
+                            break;
+                        }
+                    }
+                    else { // 선을 선택했을 때
+                        let data = clip.ctx.getImageData(e.offsetX + clip.x, e.offsetY + clip.y, 1, 1).data;
+                        if(data[3] !== 0) {
+                            this.clipBuffer = clip;
+                            clip.select();
+                            break;
+                        }
+                    }
+                }
 
             }
             
             // 자유곡선, 사각형, 텍스트
             else {
-                this.pauseVideo();
-
                 const clip = this.clipBuffer = new Clip(this.app.status, this.playTrack);
                 clip.root.style.zIndex = this.playTrack.clipList.length + 1;
                 this.playTrack.pushClip(clip);
@@ -80,6 +99,7 @@ class Viewport {
         this.root.addEventListener("mousemove", e => {
             if(e.which !== 1) return false;
             if(this.clipBuffer === null) return false;
+            if(this.app.status !== App.PATH && this.app.status !== App.RECT && this.app.status !== App.TEXT) return false;
 
             const clip = this.clipBuffer;
 
@@ -122,11 +142,17 @@ class Viewport {
             }
         });
 
-        window.addEventListener("mouseup", e => {
+        this.root.addEventListener("mouseup", e => {
             if(e.which !== 1) return false;
             if(this.clipBuffer === null) return false;
+            if(this.app.status !== App.PATH && this.app.status !== App.RECT && this.app.status !== App.TEXT) return false;
 
-            if(this.clipBuffer.type === App.TEXT) {
+            if(this.clipBuffer.type === App.RECT){
+                let style = this.clipBuffer.root.style;
+                style.backgroundColor = style.borderColor;
+                style.borderColor = "transparent";
+            }
+            else if(this.clipBuffer.type === App.TEXT) {
                 this.clipBuffer.root.focus();
             }
             else {

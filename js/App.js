@@ -103,6 +103,9 @@ class App {
         if(exist) exist.classList.remove("active");
 
         target.classList.add("active");
+
+        if(status === App.SELECT) this.viewport.playTrack.enableClips();
+        else this.viewport.playTrack.disableClips();
     }
 }
 

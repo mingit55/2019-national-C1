@@ -1,5 +1,8 @@
 class Clip {
+    static activeColor = "rgb(255, 173, 96)";
+
     constructor(type, track){
+        this.active = false;
         this.type = type;
         this.track = track;
 
@@ -12,6 +15,9 @@ class Clip {
         this.clipWidth = document.querySelector("#s-width");
         this.clipFsize = document.querySelector("#s-fsize");
 
+        this.v_width = this.track.app.viewport.width;
+        this.v_height = this.track.app.viewport.height;
+
         this.root = null;
         this.ctx = null;
         this.history = [];
@@ -23,11 +29,9 @@ class Clip {
                         </div>`.parseDom();
 
         if(type === App.PATH) {
-            const {width, height} = this.track.app.viewport;
-
             this.root = document.createElement("canvas");
-            this.root.width = width;
-            this.root.height = height;
+            this.root.width = this.v_width;
+            this.root.height = this.v_height;
 
             this.ctx = this.root.getContext('2d');
             this.ctx.strokeStyle = this.clipColor.value;
@@ -37,7 +41,7 @@ class Clip {
             this.root = document.createElement("div");
 
             let style = this.root.style;
-            style.background = this.clipColor.value;
+            style.borderColor = this.clipColor.value;
         }
         else if(type === App.TEXT) {
             this.root = document.createElement("input");
@@ -46,6 +50,11 @@ class Clip {
             let style = this.root.style;
             style.color = this.clipColor.value;
             style.fontSize = this.clipFsize.value;
+
+            this.root.addEventListener("keydown", e => {
+                let scrollWidth = e.target.scrollWidth;
+                e.target.style.width = scrollWidth > this.v_width - this.x ? this.v_width - this.x + "px" : scrollWidth + "px";
+            });
         }
 
         this.root.classList.add("clip");
@@ -60,10 +69,8 @@ class Clip {
         let span = document.createElement("span");
         span.classList.add("clip");
         span.innerText = text;
-        span.style.left = this.x + "px";
-        span.style.top = this.y + "px";
-        span.style.color = this.root.style.color;
-        span.style.fontSize = this.root.style.fontSize;
+        
+        span.style = this.root.style.cssText;
 
         parent.insertBefore(span, this.root);
         this.root.remove();
@@ -73,5 +80,61 @@ class Clip {
 
     addEvent(){
         this.root.addEventListener("keydown", e => e.stopPropagation());
+
+        this.t_root.addEventListener("click", () => {
+            this.track.clipList.forEach(x => x.diselect());
+            this.select();
+        });
+    }
+
+
+    select(){
+        this.active = true;
+        this.root.classList.add("active");
+        this.t_root.classList.add("active");
+
+        if(this.type === App.PATH){
+            const lineColor = this.ctx.strokeStyle;
+            const lineWidth = this.ctx.lineWidth;
+
+            this.ctx.clearRect(0, 0, this.v_width, this.v_height);
+
+            this.ctx.strokeStyle = Clip.activeColor;
+            this.ctx.lineWidth = lineWidth + 8;
+
+            this.history.forEach((data, idx) => {
+                const {x, y} = data;
+                if(idx === 0) this.ctx.moveTo(x, y);
+                else this.ctx.lineTo(x, y);
+            });
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = lineColor;
+            this.ctx.lineWidth = lineWidth;
+            
+            this.history.forEach((data, idx) => {
+                const {x, y} = data;
+                if(idx === 0) this.ctx.moveTo(x, y);
+                else this.ctx.lineTo(x, y);
+            });
+            this.ctx.stroke();
+        }
+    }
+
+    diselect(){
+        this.active = false;
+        this.root.classList.remove("active");
+        this.t_root.classList.remove("active");
+
+        if(this.type === App.PATH){
+            this.ctx.clearRect(0, 0, this.v_width, this.v_height);
+            
+            this.history.forEach((data, idx) => {
+                const {x, y} = data;
+                if(idx === 0) this.ctx.moveTo(x, y);
+                else this.ctx.lineTo(x, y);
+            });
+            this.ctx.stroke();
+        }
     }
 }
