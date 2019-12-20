@@ -121,18 +121,13 @@ class Clip {
         window.addEventListener("mousemove", e => {
             if(e.which !== 1 || !this.clipClick || !this.active) return false;
             
-            let os = offset(this.track.app.viewport.root);
-            let ox = e.pageX - os.left;
-            let oy = e.pageY - os.top;
+            const {x, y} = fitOffset(this.track.app.viewport.root, e.pageX, e.pageY);
 
-            ox = ox < 0 ? 0 : ox > this.v_width ? this.v_width : ox;
-            oy = oy < 0 ? 0 : oy > this.v_height ? this.v_height : oy;
-
-            this.root.style.left = ox - this.cx + "px";
-            this.root.style.top = oy - this.cy + "px";
+            this.root.style.left = x - this.cx + "px";
+            this.root.style.top = y - this.cy + "px";
             
-            this.x = ox - this.cx;
-            this.y = oy - this.cy;
+            this.x = x - this.cx;
+            this.y = y - this.cy;
         });
         
         window.addEventListener("mouseup", e => {
@@ -143,8 +138,14 @@ class Clip {
 
 
         // TRACK ROOT
+        this.v_line.addEventListener("dragstart", e => {
+            e.preventDefault();
+            return false;
+        });
 
         this.t_root.addEventListener("click", () => {
+            if(this.track.app.status !== App.SELECT) return false;
+
             this.track.clipList.forEach(x => x.diselect());
             this.select();
         });
@@ -194,11 +195,16 @@ class Clip {
                 w = ox - this.tx;
                 w = w < min_w ? min_w : w > this.v_width ? this.v_width : w;
 
+                ox = this.tx;
                 style.width = w + "px";
             }
 
             // 시간 변경
-            
+            this.duration = w * this.track.videoDuration / this.v_width;
+            this.startTime = ox * this.track.videoDuration / this.v_width;
+
+            this.clipStart.innerText = this.startTime.parseTime();
+            this.clipDuration.innerText = this.duration.parseTime();
         });
 
         window.addEventListener("mouseup", e => {
@@ -214,6 +220,8 @@ class Clip {
 
 
     select(){
+        if(this.active) return false;
+
         this.active = true;
         this.root.classList.add("active");
         this.t_root.classList.add("active");
@@ -250,6 +258,8 @@ class Clip {
     }
 
     diselect(){
+        if(!this.active) return false;
+
         this.active = false;
         this.root.classList.remove("active");
         this.t_root.classList.remove("active");

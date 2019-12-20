@@ -43,30 +43,33 @@ class Viewport {
 
             // 선택
             if(this.app.status === App.SELECT){
-                this.clipBuffer = null;
-                this.playTrack.clipList.forEach(x => x.diselect());
-
-                for(const clip of this.playTrack.clipList.reverse()){
-                    if(this.clipBuffer !== null) break;
-                    if(clip.type !== App.PATH){
-                        if(e.target === clip.root) {
-                            this.clipBuffer = clip;
+                let flag = false;
+                for(let clip of this.playTrack.clipList.reverse()){
+                    if(clip.type === App.PATH){
+                        let color = clip.ctx.getImageData(e.offsetX, e.offsetY, 1, 1).data[3];
+                        if(!flag && color) {
                             clip.select();
-                            break;
+                            this.clipBuffer = clip;
+                            flag = true;
                         }
+                        else clip.diselect();
                     }
-                    else { // 선을 선택했을 때
-                        if(e.target !== clip.root) return false;
-                        let data = clip.ctx.getImageData(e.offsetX, e.offsetY, 1, 1).data;
+                    else {
+                        const os = offset(clip.root);
+                        const minX = os.left;
+                        const maxX = os.left + clip.root.offsetWidth;
 
-                        if(data[3] !== 0) {
-                            this.clipBuffer = clip;
+                        const minY = os.top;
+                        const maxY = os.top + clip.root.offsetHeight;
+                        
+                        if(minX <= e.pageX && e.pageX <= maxX && minY <= e.pageY && e.pageY <= maxY){
                             clip.select();
-                            break;
+                            this.clipBuffer = clip;
+                            flag = true;
                         }
+                        else clip.diselect();
                     }
                 }
-
             }
             
             // 자유곡선, 사각형, 텍스트
@@ -144,7 +147,7 @@ class Viewport {
             }
         });
 
-        this.root.addEventListener("mouseup", e => {
+        window.addEventListener("mouseup", e => {
             if(e.which !== 1) return false;
             if(this.clipBuffer === null) return false;
             if(this.app.status !== App.PATH && this.app.status !== App.RECT && this.app.status !== App.TEXT) return false;
@@ -153,6 +156,7 @@ class Viewport {
                 let style = this.clipBuffer.root.style;
                 style.backgroundColor = style.borderColor;
                 style.borderColor = "transparent";
+                this.clipBuffer = null;
             }
             else if(this.clipBuffer.type === App.TEXT) {
                 this.clipBuffer.root.focus();
@@ -178,6 +182,15 @@ class Viewport {
             }
 
             this.videoTime.innerText = currentTime.parseTime();
+
+            this.playTrack.clipList.forEach(clip => {
+                if(clip.startTime <= this.video.currentTime && this.video.currentTime <= clip.startTime + clip.duration){
+                    this.root.append(clip.root);
+                }
+                else {
+                    clip.root.remove();
+                }
+            });
         }
     }
 

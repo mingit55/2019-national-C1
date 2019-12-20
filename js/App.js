@@ -35,6 +35,17 @@ function offset(target){
     return {left: left, top: top};
 }
 
+function fitOffset(target, pageX, pageY){
+    let os = offset(target);
+    let ox = pageX - os.left;
+    let oy = pageY - os.top; 
+
+    ox = ox < 0 ? 0 : ox > target.offsetWidth ? target.offsetWidth : ox;
+    oy = oy < 0 ? 0 : oy > target.offsetHeight ? target.offsetHeight : oy;
+
+    return {x: ox, y: oy};
+}
+
 class App {
     static PATH = 0;
     static RECT = 1;
