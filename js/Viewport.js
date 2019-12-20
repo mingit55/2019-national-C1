@@ -56,7 +56,9 @@ class Viewport {
                         }
                     }
                     else { // 선을 선택했을 때
-                        let data = clip.ctx.getImageData(e.offsetX + clip.x, e.offsetY + clip.y, 1, 1).data;
+                        if(e.target !== clip.root) return false;
+                        let data = clip.ctx.getImageData(e.offsetX, e.offsetY, 1, 1).data;
+
                         if(data[3] !== 0) {
                             this.clipBuffer = clip;
                             clip.select();
@@ -198,6 +200,7 @@ class Viewport {
         this.video.src = `movies/movie${track.id}.mp4`;
 
         this.video.oncanplay = () => {
+            this.playTrack.videoDuration = this.video.duration;
             this.videoDuration.innerText = this.video.duration.parseTime();
         }
     }

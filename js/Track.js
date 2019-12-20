@@ -4,6 +4,8 @@ class Track {
         this.app = app;
         this.clipList = [];
         this.cursorMove = false;
+
+        this.videoDuration = null;
     
         this.root = track;
         this.html =  `<div>

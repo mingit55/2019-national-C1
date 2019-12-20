@@ -19,6 +19,21 @@ Number.prototype.parseTime = function(){
     return `${hour}:${min}:${sec}:${msec}`;
 }
 
+function offset(target){
+    let left = target.offsetLeft;
+    let top = target.offsetTop;
+
+    let parent = target.offsetParent;
+    if(parent){
+        do {
+            left += parent.offsetLeft;
+            top += parent.offsetTop;
+            parent = parent.offsetParent;
+        } while(parent);
+    }
+
+    return {left: left, top: top};
+}
 
 class App {
     static PATH = 0;
