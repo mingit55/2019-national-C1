@@ -35,13 +35,15 @@ function offset(target){
     return {left: left, top: top};
 }
 
-function fitOffset(target, pageX, pageY){
+function fitOffset(target, pageX, pageY, fit = true){
     let os = offset(target);
     let ox = pageX - os.left;
     let oy = pageY - os.top; 
 
-    ox = ox < 0 ? 0 : ox > target.offsetWidth ? target.offsetWidth : ox;
-    oy = oy < 0 ? 0 : oy > target.offsetHeight ? target.offsetHeight : oy;
+    if(fit){
+        ox = ox < 0 ? 0 : ox > target.offsetWidth ? target.offsetWidth : ox;
+        oy = oy < 0 ? 0 : oy > target.offsetHeight ? target.offsetHeight : oy;  
+    }
 
     return {x: ox, y: oy};
 }
@@ -93,9 +95,9 @@ class App {
         
         document.querySelector("#pause-btn").addEventListener("click", () => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.viewport.pauseVideo());
 
-        document.querySelector("#alldel-btn");
+        document.querySelector("#allDel-btn").addEventListener("click", () => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.viewport.playTrack.reset());
 
-        document.querySelector("#seldel-btn");
+        document.querySelector("#selDel-btn");
 
         document.querySelector("#down-btn");
 

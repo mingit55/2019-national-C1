@@ -23,6 +23,11 @@ class Viewport {
     }
 
     addEvent(){
+        this.video.addEventListener("dragstart", e => {
+            e.preventDefault();
+            return false;
+        });
+
         this.root.addEventListener("mousedown", e => {
             if(e.which !== 1) return false;
             if(this.video.src === "") return false;
@@ -44,9 +49,18 @@ class Viewport {
             // 선택
             if(this.app.status === App.SELECT){
                 let flag = false;
-                for(let clip of this.playTrack.clipList.reverse()){
+
+            
+
+                const clength = this.playTrack.clipList.length;
+
+                for(let i = clength - 1; i >= 0; i-- ){
+                    let clip = this.playTrack.clipList[i];
+                    
                     if(clip.type === App.PATH){
-                        let color = clip.ctx.getImageData(e.offsetX, e.offsetY, 1, 1).data[3];
+                        const os = fitOffset(clip.root, e.pageX, e.pageY, false);
+                        
+                        let color = clip.ctx.getImageData(os.x, os.y, 1, 1).data[3];
                         if(!flag && color) {
                             clip.select();
                             this.clipBuffer = clip;
@@ -62,7 +76,7 @@ class Viewport {
                         const minY = os.top;
                         const maxY = os.top + clip.root.offsetHeight;
                         
-                        if(minX <= e.pageX && e.pageX <= maxX && minY <= e.pageY && e.pageY <= maxY){
+                        if(!flag && minX <= e.pageX && e.pageX <= maxX && minY <= e.pageY && e.pageY <= maxY){
                             clip.select();
                             this.clipBuffer = clip;
                             flag = true;
@@ -74,8 +88,7 @@ class Viewport {
             
             // 자유곡선, 사각형, 텍스트
             else {
-                const clip = this.clipBuffer = new Clip(this.app.status, this.playTrack);
-                clip.root.style.zIndex = this.playTrack.clipList.length + 1;
+                const clip = this.clipBuffer = new Clip(this.playTrack.clipIndex++, this.app.status, this.playTrack);
                 this.playTrack.pushClip(clip);
                 this.root.append(clip.root);
 
@@ -184,10 +197,11 @@ class Viewport {
             this.videoTime.innerText = currentTime.parseTime();
 
             this.playTrack.clipList.forEach(clip => {
+                let exist = document.querySelector("#clip-"+clip.id);
                 if(clip.startTime <= this.video.currentTime && this.video.currentTime <= clip.startTime + clip.duration){
-                    this.root.append(clip.root);
+                    if(!exist) this.root.append(clip.root);
                 }
-                else {
+                else if(exist) {
                     clip.root.remove();
                 }
             });

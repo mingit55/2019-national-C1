@@ -2,7 +2,8 @@ class Clip {
     static activeColor = "rgb(255, 173, 96)";
     static min_time_width = 10;
 
-    constructor(type, track){
+    constructor(id, type, track){
+        this.id = id;
         this.type = type;
         this.track = track;
 
@@ -81,6 +82,8 @@ class Clip {
             });
         }
 
+        this.root.id = "clip-" + this.id;
+        this.root.style.zIndex = this.id;
         this.root.classList.add("clip");
 
         this.addEvent();
@@ -110,16 +113,24 @@ class Clip {
 
     addEvent(){
         // ROOT
+        this.root.addEventListener("dragstart", e => {
+            e.preventDefault();
+            return false;
+        });
+
         this.root.addEventListener("keydown", e => e.stopPropagation());
 
         this.root.addEventListener("mousedown", e => {
             this.clipClick = true; 
-            this.cx = e.offsetX;
-            this.cy = e.offsetY;
+
+            let os = fitOffset(this.root, e.pageX, e.pageY);
+            this.cx = os.x;
+            this.cy = os.y;
         });
 
         window.addEventListener("mousemove", e => {
-            if(e.which !== 1 || !this.clipClick || !this.active) return false;
+            e.which && console.log(e.which !== 1, !this.clipClick, !this.active);
+            if(e.which !== 1 || !this.clipClick || !this.active) return;
             
             const {x, y} = fitOffset(this.track.app.viewport.root, e.pageX, e.pageY);
 

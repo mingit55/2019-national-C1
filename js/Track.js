@@ -4,6 +4,7 @@ class Track {
         this.app = app;
         this.clipList = [];
         this.cursorMove = false;
+        this.clipIndex = 1;
 
         this.videoDuration = null;
     
@@ -75,5 +76,14 @@ class Track {
 
     enableClips(){
         this.clipList.forEach(x => x.root.style.pointerEvents = "all");
+    }
+
+    reset(){
+        this.clipList.forEach(clip => {
+            clip.root.remove();
+            clip.t_root.remove();
+        });
+        this.clipList = [];
+        this.clipIndex = 1;
     }
 }
