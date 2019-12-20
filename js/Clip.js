@@ -7,12 +7,13 @@ class Clip {
         this.type = type;
         this.track = track;
 
+        this.clipClick = false;
+
         // 클립 시간
         this.startTime = 0;
         this.duration = this.track.videoDuration;
 
         this.active = false;
-        this.clipClick = false;
         this.timeClick = null;
 
         // Viewport size
@@ -43,7 +44,7 @@ class Clip {
         this.x = 0;
         this.y = 0;
         
-        this.t_root =  `<div class="item">
+        this.t_root =  `<div class="clip-line item" draggable="true" data-id="${this.id}">
                             <div class="view-line">
                                 <div class="left" data-id="left"></div>
                                 <div class="center" data-id="center"></div>
@@ -100,7 +101,6 @@ class Clip {
         span.style = this.root.style.cssText;
 
         span.addEventListener("mousedown", e => {
-            this.clipClick = true; 
             this.cx = e.offsetX;
             this.cy = e.offsetY;
         });
@@ -120,16 +120,12 @@ class Clip {
 
         this.root.addEventListener("keydown", e => e.stopPropagation());
 
-        this.root.addEventListener("mousedown", e => {
-            this.clipClick = true; 
 
-            let os = fitOffset(this.root, e.pageX, e.pageY);
-            this.cx = os.x;
-            this.cy = os.y;
+        window.addEventListener("mouseup", e => {
+            this.clipClick = false;
         });
 
         window.addEventListener("mousemove", e => {
-            e.which && console.log(e.which !== 1, !this.clipClick, !this.active);
             if(e.which !== 1 || !this.clipClick || !this.active) return;
             
             const {x, y} = fitOffset(this.track.app.viewport.root, e.pageX, e.pageY);
@@ -139,12 +135,6 @@ class Clip {
             
             this.x = x - this.cx;
             this.y = y - this.cy;
-        });
-        
-        window.addEventListener("mouseup", e => {
-            this.clipClick = false;
-            this.cx = 0;
-            this.cy = 0;
         });
 
 
@@ -227,6 +217,28 @@ class Clip {
             this.t_width = 0;
 
         });
+
+        // - Drag & Drop 구현
+
+        this.t_root.addEventListener("dragstart", e => {
+            if(!e.target.classList.contains("clip-line")) return false;
+            if(!this.active) return false;
+
+            this.track.dragStart(this);
+        });
+
+        this.t_root.addEventListener("dragover", e => {
+            e.preventDefault();
+        });
+
+        this.t_root.addEventListener("drop", e => {
+            let target = e.target;
+            
+            while(target.nodeName !== "BODY" && !target.classList.contains("clip-line")) target = target.parentElement;
+            if(target.nodeName === "BODY") return false;
+
+            this.track.swapClip(target);
+        });
     }
 
 
@@ -270,6 +282,9 @@ class Clip {
 
     diselect(){
         if(!this.active) return false;
+
+        this.cx = 0;
+        this.cy = 0;
 
         this.active = false;
         this.root.classList.remove("active");

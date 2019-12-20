@@ -97,7 +97,7 @@ class App {
 
         document.querySelector("#allDel-btn").addEventListener("click", () => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.viewport.playTrack.reset());
 
-        document.querySelector("#selDel-btn");
+        document.querySelector("#selDel-btn").addEventListener("click", () => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.viewport.playTrack.removeSelection())
 
         document.querySelector("#down-btn");
 

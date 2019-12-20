@@ -6,6 +6,8 @@ class Track {
         this.cursorMove = false;
         this.clipIndex = 1;
 
+        this.dragClip = null;
+
         this.videoDuration = null;
     
         this.root = track;
@@ -85,5 +87,56 @@ class Track {
         });
         this.clipList = [];
         this.clipIndex = 1;
+    }
+
+    removeSelection(){
+        let findIdx = this.clipList.findIndex(x => x.active);
+        
+        if(findIdx < 0) return false;
+        
+        let rm = this.clipList[findIdx];
+        rm.root.remove();
+        rm.t_root.remove();
+
+        this.clipList.splice(findIdx, 1);
+    }
+
+    dragStart(clip){
+        this.dragClip = clip;
+    }
+
+    swapClip(dropped){
+        let dropClip = this.clipList.find(x => x.id == dropped.dataset.id);
+
+        if(this.dragClip === dropClip) return false;
+        if(this.dragClip === null) return false;
+    
+        // 아이디 변경
+        console.log(dropClip);
+        let temp = dropClip.id;
+        dropClip.id = this.dragClip.id;
+        this.dragClip.id = temp;
+
+        // id와 연관되는 값 변경
+        dropClip.root.zIndex = dropClip.id;
+        dropClip.root.id = "clip-"+dropClip.id;
+        dropClip.t_root.dataset.id = dropClip.id;
+
+        this.dragClip.root.zIndex = this.dragClip.id;
+        this.dragClip.root.id = "clip-"+this.dragClip.id;
+        this.dragClip.t_root.dataset.id = this.dragClip.id;
+
+
+        // DOM 위치 변경
+        let d_next = dropped.nextElementSibling;
+        this.dragClip.t_root.remove();
+        this.listHtml.insertBefore(this.dragClip.t_root, d_next);
+
+
+        // 배열 내 위치 변경
+        this.clipList[dropClip.id - 1] = dropClip;
+        this.clipList[this.dragClip.id - 1] = this.dragClip;
+
+        this.dragClip = null;
     }
 }

@@ -50,26 +50,28 @@ class Viewport {
             if(this.app.status === App.SELECT){
                 let flag = false;
 
-            
-
                 const clength = this.playTrack.clipList.length;
 
                 for(let i = clength - 1; i >= 0; i-- ){
                     let clip = this.playTrack.clipList[i];
+                    const os = offset(clip.root);
+                    const fitOs = fitOffset(clip.root, e.pageX, e.pageY, false);
                     
-                    if(clip.type === App.PATH){
-                        const os = fitOffset(clip.root, e.pageX, e.pageY, false);
-                        
-                        let color = clip.ctx.getImageData(os.x, os.y, 1, 1).data[3];
+                    if(clip.type === App.PATH){                        
+                        let color = clip.ctx.getImageData(fitOs.x, fitOs.y, 1, 1).data[3];
                         if(!flag && color) {
+                            clip.clipClick = true;
+                            clip.cx = fitOs.x;
+                            clip.cy = fitOs.y;
+
                             clip.select();
+                            
                             this.clipBuffer = clip;
                             flag = true;
                         }
                         else clip.diselect();
                     }
                     else {
-                        const os = offset(clip.root);
                         const minX = os.left;
                         const maxX = os.left + clip.root.offsetWidth;
 
@@ -77,6 +79,10 @@ class Viewport {
                         const maxY = os.top + clip.root.offsetHeight;
                         
                         if(!flag && minX <= e.pageX && e.pageX <= maxX && minY <= e.pageY && e.pageY <= maxY){
+                            clip.clipClick = true;
+                            clip.cx = fitOs.x;
+                            clip.cy = fitOs.y;
+
                             clip.select();
                             this.clipBuffer = clip;
                             flag = true;
