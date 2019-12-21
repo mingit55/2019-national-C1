@@ -1,0 +1,40 @@
+<?php
+namespace controller;
+
+use app\DB;
+
+class MainController extends Controller {
+    function homePage(){
+        $this->view("index.php");
+    }
+
+    function introPage(){
+        $this->view("intro.php");
+    }
+
+    function infoPage(){
+        $this->view("info.php");
+    }
+
+    function entryPage(){
+        $this->view("entry.php");
+    }
+
+    function schedulePage(){
+        $this->view("schedule.php");
+    }
+
+    function addMovie(){
+        emptyCheck($_POST);
+        extract($_POST);
+        
+        $yearRegex = "/^[0-9]{4}$/";
+        if($duration <= 0) back("재생 시간은 최소 1초는 넘어야 합니다.");
+        if(!preg_match($yearRegex, $c_year)) back("제작년도는 [2019]와 같은 형식으로 입력해 주십시오.");
+
+        $data = [user()->id, $name, $duration, $c_year, $type];
+
+        DB::query("INSERT INTO movies(uid, name, duration, c_year, type) VALUES (?, ?, ?, ?, ?)", $data);
+        go("/", "출품신청이 완료되었습니다.");
+    }
+}
