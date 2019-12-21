@@ -18,7 +18,7 @@
             </div>
             <div class="form-group">
                 <span class="label">제작년도</span>
-                <input type="text" name="c_year" maxlength="4">
+                <input type="text" name="c_year" maxlength="4" placeholder="ex: 2019">
             </div>
             <div class="form-group">
                 <span class="label">분류</span>

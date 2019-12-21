@@ -39,3 +39,9 @@
             if($item === "") back("모든 정보를 기재해 주십시오");
         }
     }
+
+    function parseTime($integer){
+        $hour =  (int)($integer / 3600);
+        $min = (int)($integer % 3600 / 60);
+        return "{$hour}시간 {$min}분";
+    }

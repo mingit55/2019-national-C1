@@ -12,19 +12,13 @@ class UserController extends Controller {
         emptyCheck($_POST);
         extract($_POST);
 
-        if($user_id === "admin" && $password === "1234"){
-            $_SESSION['permission'] = true;
-            $_SESSION['user'] = (object)["user_id" => "admin", "user_name" => "관리자", "password" => hash("sha256", "1234")];
-        }
-        else {
             $find = DB::fetch("SELECT * FROM users WHERE user_id = ?", [$user_id]);
 
             if(!$find) back("해당 유저가 존재하지 않습니다.");
             if($find->password !== hash("sha256", $password)) back("비밀번호가 일치하지 않습니다.");
 
-            $_SESSION['permission'] = false;
+            $_SESSION['permission'] = $find->user_id === "admin";
             $_SESSION['user'] = $find;
-        }
 
         go("/", "로그인 되었습니다.");
     }

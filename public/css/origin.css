@@ -13,6 +13,12 @@
 
 ol, ul { list-style: none; }
 a { text-decoration: none; }
+button {
+    border: 0;
+    background-color: rgb(236, 154, 46);
+    color: #fff;
+    cursor: pointer;
+}
 
 ::-webkit-scrollbar { display: none; }
 
@@ -139,6 +145,21 @@ a { text-decoration: none; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 
+/* Fonts
+ */
+
+.f-11 { font-size: 1.1rem; }
+.f-12 { font-size: 1.2rem; }
+.f-13 { font-size: 1.3rem; }
+.f-14 { font-size: 1.4rem; }
+.f-15 { font-size: 1.5rem; }
+.f-16 { font-size: 1.6rem; }
+.f-17 { font-size: 1.7rem; }
+.f-18 { font-size: 1.8rem; }
+.f-19 { font-size: 1.9rem; }
+.f-20 { font-size: 2rem; }
+
+
 
 .form-group {
     width: 100%;
@@ -157,6 +178,7 @@ a { text-decoration: none; }
 }
 
 .form-group input, .form-group select {
+    padding: 0 5px;
     width: 100%;
     height: 35px;
 }
@@ -169,6 +191,7 @@ a { text-decoration: none; }
     color: #fff;
     cursor: pointer;
     border: 0;
+    padding: 10px 20px;
 }
 
 .inline {

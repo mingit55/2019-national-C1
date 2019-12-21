@@ -21,7 +21,18 @@ class MainController extends Controller {
     }
 
     function schedulePage(){
-        $this->view("schedule.php");
+        $date = isset($_GET['date']) ? $_GET['date'] : date("Y-m", time());
+        $split = explode("-", $date);
+
+        $year = $split[0];
+        $month = $split[1];
+
+        $this->view("schedule.php", ["year" => $year, "month" => $month]);
+    }
+
+    function addSchedulePage(){
+        $freeMovies = DB::fetchAll("SELECT M.id, M.name, M.duration, S.id AS sid FROM movies M LEFT JOIN schedules S ON M.id = S.mid WHERE S.id IS NULL");
+        $this->view("add_schedule.php", ["freeMovies" => $freeMovies]);
     }
 
     function addMovie(){
