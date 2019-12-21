@@ -79,7 +79,7 @@ class Clip {
 
             this.root.addEventListener("keydown", e => {
                 let scrollWidth = e.target.scrollWidth;
-                e.target.style.width = scrollWidth > this.v_width - this.x ? this.v_width - this.x + "px" : scrollWidth + "px";
+                e.target.style.width = scrollWidth > e.target.offsetWidth ? scrollWidth + parseInt(this.clipFsize.value) + "px" : e.target.offsetWidth + "px";
             });
         }
 
@@ -95,6 +95,7 @@ class Clip {
         let parent = this.root.parentElement;
         
         let span = document.createElement("span");
+        span.id = this.root.id;
         span.classList.add("clip");
         span.innerText = text;
         
@@ -164,6 +165,7 @@ class Clip {
         });
 
         window.addEventListener("mousemove", e => {
+            if(e.which !== 1) return false;
             if(!this.timeClick) return false;
 
 
@@ -221,6 +223,8 @@ class Clip {
         // - Drag & Drop 구현
 
         this.t_root.addEventListener("dragstart", e => {
+            e.stopPropagation();
+
             if(!e.target.classList.contains("clip-line")) return false;
             if(!this.active) return false;
 

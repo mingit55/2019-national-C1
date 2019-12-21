@@ -228,6 +228,9 @@ class Viewport {
     }
 
     setVideo(track){ 
+        if(this.playTrack !== null)
+            this.playTrack.clipList.forEach(x => x.root.remove());
+
         this.playTrack = track;
         this.emptyMsg.remove();
         this.video.src = `movies/movie${track.id}.mp4`;

@@ -33,6 +33,7 @@ class Track {
         });
 
         window.addEventListener("mousemove", e => {
+            if(e.which !== 1) return false;
             if(!this.cursorMove) return false;
             let x = e.clientX - this.app.contents.offsetLeft;
             x = x < 0 ? 0 : x > this.width ? this.width : x;
@@ -106,30 +107,32 @@ class Track {
     }
 
     swapClip(dropped){
+        console.log(this.dragClip.t_root, dropped);
         let dropClip = this.clipList.find(x => x.id == dropped.dataset.id);
 
         if(this.dragClip === dropClip) return false;
         if(this.dragClip === null) return false;
     
         // 아이디 변경
-        console.log(dropClip);
         let temp = dropClip.id;
         dropClip.id = this.dragClip.id;
         this.dragClip.id = temp;
 
         // id와 연관되는 값 변경
-        dropClip.root.zIndex = dropClip.id;
+        dropClip.root.style.zIndex = dropClip.id;
         dropClip.root.id = "clip-"+dropClip.id;
         dropClip.t_root.dataset.id = dropClip.id;
 
-        this.dragClip.root.zIndex = this.dragClip.id;
+        this.dragClip.root.style.zIndex = this.dragClip.id;
         this.dragClip.root.id = "clip-"+this.dragClip.id;
         this.dragClip.t_root.dataset.id = this.dragClip.id;
 
 
         // DOM 위치 변경
         let d_next = dropped.nextElementSibling;
-        this.dragClip.t_root.remove();
+        if(this.dragClip.t_root === d_next) d_next = dropped;
+
+        this.listHtml.insertBefore(dropped, this.dragClip.t_root);
         this.listHtml.insertBefore(this.dragClip.t_root, d_next);
 
 

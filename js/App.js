@@ -1,3 +1,7 @@
+Date.prototype.parseStr = function(){
+    return `${this.getFullYear()}`.substr(2) + (this.getMonth() < 9 ? "0" + (this.getMonth() + 1) : this.getMonth() + 1) + (this.getDate() < 10 ? "0" + this.getDate() : this.getDate());
+}
+
 String.prototype.parseDom = function(){
     let parent = document.createElement("div");
     parent.innerHTML = this;
@@ -99,7 +103,7 @@ class App {
 
         document.querySelector("#selDel-btn").addEventListener("click", () => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.viewport.playTrack.removeSelection())
 
-        document.querySelector("#down-btn");
+        document.querySelector("#down-btn").addEventListener("click", () => this.viewport.playTrack === null ? alert("비디오를 선택해 주세요!") : this.download())
 
 
         ////////////////
@@ -135,6 +139,85 @@ class App {
 
         if(status === App.SELECT) this.viewport.playTrack.enableClips();
         else this.viewport.playTrack.disableClips();
+    }
+
+    download(){
+        let viewList = [];
+        this.viewport.playTrack.clipList.forEach(x => {
+            x.diselect();
+            let view = null;
+
+            if(x.type === App.PATH){
+                view = document.createElement("img");
+                view.width = this.viewport.width;
+                view.height = this.viewport.height;
+                view.src = x.root.toDataURL();
+                view.style = x.root.style.cssText;
+            }
+            else {
+                view = document.createElement(x.root.nodeName);
+                view.style = x.root.style.cssText;
+                view.innerText = x.root.innerText;
+            }
+
+            view.classList.add("clip");
+            view.style.position = "absolute";
+            view.style.pointerEvents = "none";
+            view.style.left = view.x + "px";
+            view.style.top = view.y + "px";
+
+            view.dataset.start = x.startTime;
+            view.dataset.duration = x.duration;
+            viewList.push(view.outerHTML);
+        });
+
+        let contents = `<!doctype html> 
+                        <head>
+                            <title>BIFF 부산국제영화제</title>
+                        </head>
+                        <body>
+                            <div id="viewport" style="position: relative; width: ${this.viewport.width}px; height: ${this.viewport.height}px; background-color: #000;">
+                                <video src="${this.viewport.video.src}" controls style="position: absolute; left: 0; top: 0; width: 100%; height: 100%;"></video>`;
+
+        viewList.forEach(view => {
+            contents += view;
+        });
+
+        contents +=         `</div>
+                            <script>
+                                const video = document.querySelector("#viewport > video");
+                                const clipList = document.querySelectorAll("#viewport .clip");
+                                
+                                function frame(){
+                                    requestAnimationFrame(frame);
+
+                                    clipList.forEach(x => {
+                                        let start = parseInt(x.dataset.start);
+                                        let duration = parseInt(x.dataset.duration);
+                                        if(start <= video.currentTime && video.currentTime <= start + duration){
+                                            x.style.visibility = "visible";
+                                        }
+                                        else {
+                                            x.style.visibility = "hidden";
+                                        }
+                                    });
+                                }
+                                requestAnimationFrame(frame);
+
+                            </script>
+                        </body>
+                        </html>`;
+        let blob = new Blob([contents], {type: "text/html; charset=utf8"});
+
+        let now = new Date();
+
+        let downBtn = document.createElement("a");
+        downBtn.href = URL.createObjectURL(blob);
+        downBtn.download = "movie-["+ now.parseStr() +"].html";
+        
+        document.body.append(downBtn);
+        downBtn.click();
+        downBtn.remove();
     }
 }
 

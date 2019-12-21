@@ -85,7 +85,7 @@
 #track .view-line div:not(.center) {
     width: 10px;
     height: 100%;
-    cursor: pointer;
+    cursor: w-resize;
 }
 
 #track .view-line .center {
