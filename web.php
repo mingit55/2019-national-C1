@@ -22,8 +22,8 @@
     Route::set("POST", "/entry", "MainController@addMovie");
 
     // 상영일정
-    Route::set("GET", "/schedule", "MainController@schedulePage");
-    Route::set("GET", "/schedule/add", "MainController@addSchedulePage");
-    Route::set("POST", "/schedule/add", "MainController@addSchedulePage");
+    Route::set("GET", "/schedules", "MainController@schedulePage");
+    Route::set("GET", "/schedules/add", "MainController@addSchedulePage");
+    Route::set("POST", "/schedules/add", "MainController@addSchedule");
 
     Route::connect();

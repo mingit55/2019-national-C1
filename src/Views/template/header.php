@@ -22,7 +22,7 @@
                 </div>
 
                 <a href="/entry">출품신청</a>
-                <a href="/schedule">상영일정</a>
+                <a href="/schedules">상영일정</a>
                 <a href="#">상영작검색</a>
                 <a href="#">이벤트</a>
                 <div class="nav-more more-2 flex align-center">
@@ -52,7 +52,7 @@
                 </ul>
             </li>
             <li><a href="/entry">출품신청</a></li>
-            <li><a href="/schedule">상영일정</a></li>
+            <li><a href="/schedules">상영일정</a></li>
             <li><a href="#">상영작검색</a></li>
             <li>
                 <a href="#">이벤트</a>

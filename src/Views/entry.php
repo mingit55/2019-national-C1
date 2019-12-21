@@ -14,7 +14,7 @@
             </div>
             <div class="form-group">
                 <span class="label">러닝타임</span>
-                <input type="number" name="duration" min="0">
+                <input type="number" name="duration" min="0" placeholder="초 단위로 입력해 주세요. (ex: 3800 -> 1시간 3분 20초)">
             </div>
             <div class="form-group">
                 <span class="label">제작년도</span>

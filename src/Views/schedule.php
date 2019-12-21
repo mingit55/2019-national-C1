@@ -78,7 +78,7 @@
             <div class="body">
             </div>
         </div>
-        <a href="/schedule/add" class="button ml-1">상영일정등록</a>
+        <a href="/schedules/add" class="button ml-1">상영일정등록</a>
     </div>    
 </section>
 
@@ -110,12 +110,12 @@
     }
 
     function prevDate(){
-        if(month !== 1) location.assign(`/schedule?date=${year}-${month - 1}`);
-        else location.assign(`/schedule?date=${year - 1}-12`);
+        if(month !== 1) location.assign(`/schedules?date=${year}-${month - 1}`);
+        else location.assign(`/schedules?date=${year - 1}-12`);
     }
 
     function nextDate(){
-        if(month !== 12) location.assign(`/schedule?date=${year}-${month + 1}`);
-        else location.assign(`/schedule?date=${year + 1}-1`);
+        if(month !== 12) location.assign(`/schedules?date=${year}-${month + 1}`);
+        else location.assign(`/schedules?date=${year + 1}-1`);
     }
 </script>

@@ -11,6 +11,7 @@
             <div class="form-group">
                 <span class="label">출품작</span>
                 <select name="mid">
+                    <option value="">출품작을 선택하세요</option>
                     <?php foreach($freeMovies as $movie):?>
                         <option value="<?=$movie->id?>"><?=$movie->name?> (<?=parseTime($movie->duration)?>)</option>
                     <?php endforeach;?>

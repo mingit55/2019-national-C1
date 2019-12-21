@@ -48,4 +48,27 @@ class MainController extends Controller {
         DB::query("INSERT INTO movies(uid, name, duration, c_year, type) VALUES (?, ?, ?, ?, ?)", $data);
         go("/", "출품신청이 완료되었습니다.");
     }
+
+    function addSchedule(){
+        emptyCheck($_POST);
+        extract($_POST);
+
+        $data = [$mid, $s_datetime];
+
+        $scheduleRegex = "/^[0-9]{4}\/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{1,2}$/";
+        if(!preg_match($scheduleRegex, $s_datetime))
+            back("상영일정의 양식이 올바르지 않습니다.");
+
+        $split = explode("/", $s_datetime);
+        if($split[1] <= 0 || 12 < $split[1]) back("상영 일정의 양식이 올바르지 않습니다.");
+        if($split[2] <= 0 || 31 < $split[2]) back("상영 일정의 양식이 올바르지 않습니다.");
+        if($split[3] <  0 || 23 < $split[3]) back("상영 일정의 양식이 올바르지 않습니다.");
+        if($split[4] <  0 || 59 < $split[4]) back("상영 일정의 양식이 올바르지 않습니다.");
+        
+        
+        
+        DB::query("INSERT INTO schedules(mid, datetime) VALUES (?, ?)", $data);
+        
+        go("/schedules", "스케줄이 등록되었습니다.");
+    }
 }

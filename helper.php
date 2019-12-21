@@ -41,7 +41,7 @@
     }
 
     function parseTime($integer){
-        $hour =  (int)($integer / 3600);
-        $min = (int)($integer % 3600 / 60);
-        return "{$hour}시간 {$min}분";
+        $hour = (int)($integer / 3600);
+        $min  = (int)($integer % 3600 / 60);
+        return  "{$hour}시간 {$min}분";
     }
