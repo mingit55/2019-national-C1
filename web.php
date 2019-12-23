@@ -25,5 +25,6 @@
     Route::set("GET", "/schedules", "MainController@schedulePage");
     Route::set("GET", "/schedules/add", "MainController@addSchedulePage");
     Route::set("POST", "/schedules/add", "MainController@addSchedule");
+    Route::set("POST", "/schedules/get", "MainController@getSchedules");
 
     Route::connect();

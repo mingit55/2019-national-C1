@@ -88,26 +88,43 @@
     const year = parseInt(v_year.innerText);
     const month = parseInt(v_month.innerText);
 
-    let date = new Date(`${v_year.innerText}-${v_month.innerText}-1`);
-    let startDay = date.getDay();
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "/schedules/get" + location.search);
+    xhr.send();
+    
+    xhr.onload = () => {
+        let data = JSON.parse(xhr.responseText);
 
-    date.setMonth(month);
-    date.setDate(0);
-    let endDate = date.getDate();
+        let date = new Date(`${v_year.innerText}-${v_month.innerText}-1`);
+        let startDay = date.getDay();
 
-    const c_body = document.querySelector("#calender .body");
-    for(let i = 0; i < startDay; i++){
-        let empty = document.createElement("div");
-        empty.classList.add("day");
-        empty.classList.add("empty");
-        c_body.append(empty);
-    }
-    for(let i = 1; i <= endDate; i++){
-        let day = document.createElement("div");
-        day.classList.add("day");
-        day.innerHTML = `<span class="no">${i}</span>`;
-        c_body.append(day);
-    }
+        date.setMonth(month);
+        date.setDate(0);
+        let endDate = date.getDate();
+
+        const c_body = document.querySelector("#calender .body");
+        for(let i = 0; i < startDay; i++){
+            let empty = document.createElement("div");
+            empty.classList.add("day");
+            empty.classList.add("empty");
+            c_body.append(empty);
+        }
+        for(let i = 1; i <= endDate; i++){
+            let findEvent = data.filter(x => (new Date(x.startTime).getDate() === i));
+
+            let day = document.createElement("a");
+            day.href = "#";
+            day.classList.add("day");
+            day.innerHTML = `<span class="no">${i}</span>`;
+
+            findEvent.forEach(x => {
+                day.innerHTML += x.name + "<br>";
+            });
+            
+
+            c_body.append(day);
+        }
+    };
 
     function prevDate(){
         if(month !== 1) location.assign(`/schedules?date=${year}-${month - 1}`);
