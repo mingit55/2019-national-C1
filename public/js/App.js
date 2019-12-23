@@ -141,7 +141,9 @@ class App {
         else this.viewport.playTrack.disableClips();
     }
 
-    download(){
+    parseHTML(){
+        if(this.viewport.playTrack === null)  return alert("동영상을 선택해 주세요!");
+
         let viewList = [];
         this.viewport.playTrack.clipList.forEach(x => {
             x.diselect();
@@ -171,12 +173,7 @@ class App {
             viewList.push(view.outerHTML);
         });
 
-        let contents = `<!doctype html> 
-                        <head>
-                            <title>BIFF 부산국제영화제</title>
-                        </head>
-                        <body>
-                            <div id="viewport" style="position: relative; width: ${this.viewport.width}px; height: ${this.viewport.height}px; background-color: #000;">
+        let contents =      `<div id="viewport" style="position: relative; width: ${this.viewport.width}px; height: ${this.viewport.height}px; background-color: #000;">
                                 <video src="${this.viewport.video.src}" controls style="position: absolute; left: 0; top: 0; width: 100%; height: 100%;"></video>`;
 
         viewList.forEach(view => {
@@ -204,9 +201,20 @@ class App {
                                 }
                                 requestAnimationFrame(frame);
 
-                            </script>
-                        </body>
+                            </script>`;
+        return contents;
+    }
+
+    download(){
+        let contents = `<!doctype html> 
+                        <head>
+                            <title>BIFF 부산국제영화제</title>
+                        </head>
+                        <body>`;
+        contents += this.parseHTML();
+        contents +=     `</body>
                         </html>`;
+
         let blob = new Blob([contents], {type: "text/html; charset=utf8"});
 
         let now = new Date();
@@ -223,5 +231,5 @@ class App {
 
 
 window.addEventListener("load", () => {
-    const app = new App();
+    window.app = new App();
 });

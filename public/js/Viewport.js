@@ -233,7 +233,7 @@ class Viewport {
 
         this.playTrack = track;
         this.emptyMsg.remove();
-        this.video.src = `movies/movie${track.id}.mp4`;
+        this.video.src = `/movies/movie${track.id}.mp4`;
 
         this.video.oncanplay = () => {
             this.playTrack.videoDuration = this.video.duration;

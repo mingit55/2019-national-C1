@@ -45,3 +45,14 @@
         $min  = (int)($integer % 3600 / 60);
         return  "{$hour}시간 {$min}분";
     }
+
+    function parseTime2($str){
+        return date("H시 i분", strtotime($str));
+    }
+
+    function getMName($id){
+        if($id == 1)  return "기생충";
+        if($id == 2)  return "극한직업";
+        if($id == 3)  return "롱리브더킹";
+        if($id == 4)  return "나랏말싸미";
+    }

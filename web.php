@@ -27,4 +27,17 @@
     Route::set("POST", "/schedules/add", "MainController@addSchedule");
     Route::set("POST", "/schedules/get", "MainController@getSchedules");
 
+    Route::set("GET", "/schedules/info", "MainController@scheduleInfoPage");
+
+    Route::set("GET", "/search", "MainController@searchPage");
+
+    Route::set("GET", "/contest/list", "MainController@contestListPage");
+    Route::set("GET", "/contest/view", "MainController@contestViewPage");
+    Route::set("POST", "/contest/score", "MainController@setScore");
+
+    Route::set("GET", "/contest/join", "MainController@joinContestPage");
+    Route::set("POST", "/contest/join", "MainController@joinContestProcess");
+
+    
+
     Route::connect();

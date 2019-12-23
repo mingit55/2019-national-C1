@@ -30,14 +30,14 @@
         width: calc(100% / 7 - 10px);
         height: 100px;
         margin: 5px;
-        padding: 10px;
         border: 1px solid #ddd;
-        text-align: center;
-        line-height: 100px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
         cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+        padding-top: 30px;
+        overflow: hidden;
     }
 
     #calender .body .day.empty {
@@ -49,6 +49,20 @@
         line-height: initial;
         left: 10px;
         top: 10px;
+    }
+
+    #calender .body .day .movie {
+        width: 100%;
+        height: 20px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin: 5px 0;
+        padding: 0 5px;
+        background-color: #f6be3999;
     }
 </style>
 
@@ -113,12 +127,12 @@
             let findEvent = data.filter(x => (new Date(x.startTime).getDate() === i));
 
             let day = document.createElement("a");
-            day.href = "#";
+            day.href = `/schedules/info?date=${year}-${month}-${i}`;
             day.classList.add("day");
             day.innerHTML = `<span class="no">${i}</span>`;
 
             findEvent.forEach(x => {
-                day.innerHTML += x.name + "<br>";
+                day.innerHTML += `<div class="movie">${x.name}</div>`;
             });
             
 

@@ -145,6 +145,32 @@ button {
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 
+.main-background { background-color: rgb(236, 154, 46); }
+.main-color { color: rgb(236, 154, 46); }
+
+.myTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.myTable th {
+    height: 50px;
+    line-height: 50px;
+    background-color: rgb(240, 168, 75);
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+.myTable tbody tr {
+    height: 50px;
+    line-height: 40px;
+    border-bottom: 1px solid #ddd;
+}
+.myTable tbody tr:last-child {
+    border-bottom: 3px solid #ddd;
+}
+
 /* Fonts
  */
 

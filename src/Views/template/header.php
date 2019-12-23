@@ -23,11 +23,11 @@
 
                 <a href="/entry">출품신청</a>
                 <a href="/schedules">상영일정</a>
-                <a href="#">상영작검색</a>
+                <a href="/search">상영작검색</a>
                 <a href="#">이벤트</a>
                 <div class="nav-more more-2 flex align-center">
-                    <a href="#">영화티저 콘테스트</a>
-                    <a href="join-f.html">콘테스트 참여하기</a>
+                    <a href="/contest/list">영화티저 콘테스트</a>
+                    <a href="/contest/join">콘테스트 참여하기</a>
                 </div>
             </div>
             <div class="sub-nav flex align-center">
@@ -53,12 +53,12 @@
             </li>
             <li><a href="/entry">출품신청</a></li>
             <li><a href="/schedules">상영일정</a></li>
-            <li><a href="#">상영작검색</a></li>
+            <li><a href="/search">상영작검색</a></li>
             <li>
                 <a href="#">이벤트</a>
                 <ul>
-                    <li><a href="#">영화티저 콘테스트</a></li>
-                    <li><a href="join-f.html">콘테스트 참가하기</a></li>
+                    <li><a href="/contest/list">영화티저 콘테스트</a></li>
+                    <li><a href="/contest/join">콘테스트 참여하기</a></li>
                 </ul>
             </li>
         </ul>
